@@ -4,7 +4,21 @@ enum Choice {
   SCISSORS = 'scissors',
 }
 
+function isValidChoice(choice: string): choice is Choice {
+  return Object.values(Choice).includes(choice as Choice);
+}
+
+function generateRandomChoice(): Choice {
+  const choices = Object.values(Choice);
+  const randomIndex = Math.floor(Math.random() * choices.length);
+  return choices[randomIndex] as Choice;
+}
+
 function play(player1Choice: Choice, player2Choice: Choice): string {
+  if (!isValidChoice(player1Choice) || !isValidChoice(player2Choice)) {
+    throw new Error('Invalid choice');
+  }
+
   if (player1Choice === player2Choice) {
     return 'It\'s a tie!';
   }
@@ -21,8 +35,10 @@ function play(player1Choice: Choice, player2Choice: Choice): string {
 }
 
 // Usage:
-const player1Choice = Choice.ROCK;
-const player2Choice = Choice.PAPER;
+const player1Choice = generateRandomChoice();
+const player2Choice = generateRandomChoice();
 const result = play(player1Choice, player2Choice);
 
-console.log(result); // Output: "Player 2 wins!"
+console.log(`Player 1 chose ${player1Choice}`);
+console.log(`Player 2 chose ${player2Choice}`);
+console.log(result); // Output: "Player 2 wins!" (pode ser diferente, dependendo das escolhas aleatórias)
